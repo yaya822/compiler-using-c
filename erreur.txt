@@ -1,0 +1,17 @@
+
+----------------- Analyse Lexicale -------------------
+
+Erreur lexicale   | Ligne 2 | 'char' n'existe pas dans le dictionnaire.
+
+----------------- Analyse Synthaxique -------------------
+
+Erreur Syntaxique | Ligne 2 | type invalide (Entier ou Reel attendu)
+Erreur Syntaxique | Ligne 5 | ';' manquant
+Erreur Syntaxique | Ligne 8 | ';' manquant
+Erreur Syntaxique | 'FinSi' manquant
+Erreur Syntaxique | il faut que le programme termine par 'Fin'
+
+----------------- Analyse semantique  -------------------
+
+Erreur semantique | ligne 4 | La variable 'y' est declaree deux fois
+Erreur sémantique | Ligne 5 | les deux variables sont de types differents
