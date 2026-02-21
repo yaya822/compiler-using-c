@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-// liste chainee qui contient les mots de code 
+
+// Structure représentant un mot extrait du code source
 typedef struct mot {
     char *chaine;
     int taille;
@@ -9,7 +10,8 @@ typedef struct mot {
     struct mot *next;
 } mot;
 
-// liste chainne qui contient les   identifients 
+
+// Structure représentant un identifiant (variable)
 typedef struct identifient{
     char nom;
     char type[10];
@@ -17,13 +19,13 @@ typedef struct identifient{
     struct identifient * next;
 }identifient;
 
-// Fonction qui crée une liste vide
+// Crée une liste chaînée vide de mots
 mot *creerListe() {
     return NULL;
 }
 
 
-// Fonction qui ajoute une chaine de caractère dans la fin d'une liste
+// Ajoute un mot à la fin de la liste chaînée
 mot *ajouterMot(mot *liste, char *m, int l) {
     mot *nouvMot = (mot *)malloc(sizeof(mot));    
     nouvMot->chaine = (char *)malloc(strlen(m) + 1);
@@ -44,7 +46,7 @@ mot *ajouterMot(mot *liste, char *m, int l) {
     }
 }
 
-// Fonction qui affiche une liste
+// Affiche tous les mots de la liste avec leur numéro de ligne
 void afficheListe(mot *liste) {
     mot *courant = liste;
     while (courant != NULL) {
@@ -54,7 +56,7 @@ void afficheListe(mot *liste) {
     printf("NULL\n");
 }
 
-// Fonction pour libérer la mémoire de la liste
+// Libère toute la mémoire allouée pour la liste chaînée
 void libererListe(mot *liste) {
 
     mot *courant = liste;
@@ -68,7 +70,7 @@ void libererListe(mot *liste) {
     }
 
 }
-// fonction qui decoupe une suite de phrases en mots par ligne  
+// Découpe le fichier source en mots en tenant compte des séparateurs 
 mot *decoupeMot(FILE *fptr1, FILE *fptr2, mot *liste) {
     char ch;
     char tab[100];
@@ -89,7 +91,6 @@ mot *decoupeMot(FILE *fptr1, FILE *fptr2, mot *liste) {
             tab[0] = ch;
             tab[1] = '\0';
             fprintf(fptr2, "%s\n", tab);
-            // ajouter le mot dans la liste 
             liste = ajouterMot(liste, tab, ligne);
         }
 
@@ -120,7 +121,9 @@ mot *decoupeMot(FILE *fptr1, FILE *fptr2, mot *liste) {
 
     return liste;
 }
-// fonction qui cherche une chaine de caractere dans le dictionnaire  
+
+// Vérifie chaque mot de la liste dans le dictionnaire
+// Si un mot n'existe pas, une erreur lexicale est générée
 void check_dictionnaire(mot *ch, FILE *fptr1, FILE *fptr2) {
     char mot[100];
     int trouve;
@@ -152,7 +155,7 @@ void check_pointvirgule(mot *ch, FILE *fptr) {
     if (ch == NULL || ch->next == NULL)
         return;
 
-    /* fin de ligne détectée */
+    // fin de ligne détectée 
     if (ch->ligne != ch->next->ligne) {
 
         /* mots qui ne nécessitent pas ; */
@@ -169,11 +172,11 @@ void check_pointvirgule(mot *ch, FILE *fptr) {
     }
 }
 
-// fonction qui test est ce qu'une chaine de caractere est un operateur 
+// fonction qui test est ce qu'un caractere est un operateur ou pas 
 int isOperateur(char *s) {
     return strcmp(s, "==") == 0 || strcmp(s, "<") == 0 || strcmp(s, ">") == 0 || strcmp(s, "=<") == 0 || strcmp(s, ">=") == 0 || strcmp(s, "!=") == 0;   
 }
-
+// fonction qui test est ce qu'un caractere est un identifient  ou pas 
 int estIdentifiant(const char *s) {
     // Vérifier que la chaîne existe et a exactement 1 caractère
     if (!s || s[0] == '\0' || s[1] != '\0') return 0;
@@ -576,6 +579,7 @@ identifient* analyse_semantique(mot* liste, FILE *fptr, identifient* id) {
 }
 
 int main() {
+    
     FILE *fptr_execute;
     FILE *fptr_output;
     FILE *fptr_dictionnaire;
